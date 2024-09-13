@@ -412,25 +412,3 @@ def protect_installation_devices(previous_devices, current_devices):
             protected_devices.append(spec)
 
     disk_selection_proxy.ProtectedDevices = protected_devices
-
-
-def transaction_has_errors(transaction):
-    """Detect if finished DNF transaction has any errors.
-
-    :param transaction: the DNF transaction
-    :return: True if the transaction has any error, otherwise False
-    """
-    has_errors = False
-    for environment in transaction.get_transaction_environments():
-        if environment.get_state() == TransactionItemState_ERROR:
-            log.error("The transaction contains environment %s in error state.", environment)
-            has_errors = True
-    for group in transaction.get_transaction_groups():
-        if group.get_state() == TransactionItemState_ERROR:
-            log.error("The transaction contains group %s in error state.", group)
-            has_errors = True
-    for package in transaction.get_transaction_packages():
-        if package.get_state() == TransactionItemState_ERROR:
-            log.error("The transaction contains package %s in error state.", package)
-            has_errors = True
-    return has_errors
